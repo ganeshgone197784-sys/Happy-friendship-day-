@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Besties Day — Friendship Day 2026</title>
+<meta name="description" content="Celebrate Friendship Day: make a shareable bestie card, find your bestie type, and spread the love.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Grotesk:wght@400;500;600;700&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#170821;
+    --bg2:#26103a;
+    --panel:#2f1447;
+    --pink:#ff3e8e;
+    --pink-deep:#e0136a;
+    --lime:#c6ff3b;
+    --yellow:#ffd23f;
+    --lavender:#b98eff;
+    --cream:#fff6ec;
+    --ink:#170821;
+    --font-display:'Archivo Black', sans-serif;
+    --font-body:'Space Grotesk', sans-serif;
+    --font-hand:'Caveat', cursive;
+    --radius:22px;
+  }
+
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--cream);
+    font-family:var(--font-body);
+    overflow-x:hidden;
+    line-height:1.5;
+  }
+  a{color:inherit;}
+  img{max-width:100%; display:block;}
+  button{font-family:inherit; cursor:pointer; border:none;}
+  input, textarea, select{font-family:inherit;}
+
+  ::selection{background:var(--lime); color:var(--ink);}
+
+  .noise{
+    position:fixed; inset:0; pointer-events:none; z-index:2;
+    opacity:.035; mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* ---------- Layout helpers ---------- */
+  .wrap{max-width:1180px; margin:0 auto; padding:0 24px;}
+  section{position:relative; z-index:1;}
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    font-size:.78rem; letter-spacing:.14em; text-transform:uppercase;
+    font-weight:700; color:var(--ink); background:var(--lime);
+    padding:7px 14px; border-radius:99px;
+  }
+  .reveal{opacity:0; transform:translateY(28px); transition:opacity .7s ease, transform .7s ease;}
+  .reveal.in{opacity:1; transform:translateY(0);}
+
+  /* ---------- Nav ---------- */
+  nav{
+    position:sticky; top:0; z-index:50;
+    background:rgba(23,8,33,.72);
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+    border-bottom:1px solid rgba(255,255,255,.08);
+  }
+  nav .wrap{
+    display:flex; align-items:center; justify-content:space-between;
+    padding-top:16px; padding-bottom:16px;
+  }
+  .logo{
+    font-family:var(--font-display);
+    font-size:1.15rem;
+    letter-spacing:-.02em;
+    display:flex; align-items:center; gap:8px;
+  }
+  .logo span{color:var(--lime);}
+  .nav-cta{
+    background:var(--pink); color:var(--cream);
+    padding:11px 20px; border-radius:99px;
+    font-weight:700; font-size:.88rem;
+    box-shadow:0 6px 0 var(--pink-deep);
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .nav-cta:hover{transform:translateY(2px); box-shadow:0 4px 0 var(--pink-deep);}
+
+  /* ---------- Hero ---------- */
+  .hero{
+    padding:90px 0 60px;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero::before{
+    content:"";
+    position:absolute; inset:-20% -10% auto -10%;
+    height:600px;
+    background:radial-gradient(circle at 30% 20%, rgba(255,62,142,.35), transparent 60%),
+               radial-gradient(circle at 75% 10%, rgba(198,255,59,.22), transparent 55%);
+    filter:blur(10px);
+    pointer-events:none;
+  }
+  .hero-grid{
+    display:grid;
+    grid-template-columns:1.1fr .9fr;
+    gap:40px;
+    align-items:center;
+  }
+  .hero h1{
+    font-family:var(--font-display);
+    font-size:clamp(2.8rem, 6.4vw, 5.4rem);
+    line-height:.94;
+    letter-spacing:-.02em;
+    margin:18px 0 20px;
+  }
+  .hero h1 .accent{color:var(--pink); -webkit-text-stroke:2px var(--lime); text-shadow:6px 6px 0 var(--lime);}
+  .hero p.sub{
+    font-size:1.12rem;
+    max-width:46ch;
+    color:#e9d9f7;
+    margin-bottom:28px;
+  }
+  .hero-ctas{display:flex; gap:14px; flex-wrap:wrap;}
+  .btn-primary{
+    background:var(--lime); color:var(--ink);
+    padding:15px 26px; border-radius:99px;
+    font-weight:700; font-size:.95rem;
+    box-shadow:0 6px 0 #92c113;
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .btn-primary:hover{transform:translateY(2px); box-shadow:0 4px 0 #92c113;}
+  .btn-ghost{
+    background:transparent; color:var(--cream);
+    padding:15px 26px; border-radius:99px;
+    font-weight:700; font-size:.95rem;
+    border:2px solid rgba(255,246,236,.35);
+    transition:border-color .15s ease, background .15s ease;
+  }
+  .btn-ghost:hover{border-color:var(--cream); background:rgba(255,255,255,.06);}
+
+  /* chat-bubble collage */
+  .collage{position:relative; height:420px;}
+  .bubble{
+    position:absolute;
+    font-family:var(--font-hand);
+    font-weight:700;
+    padding:14px 20px;
+    border-radius:20px;
+    font-size:1.5rem;
+    box-shadow:0 10px 0 rgba(0,0,0,.18);
+    animation:float 6s ease-in-out infinite;
+  }
+  .bubble.b1{background:var(--pink); color:var(--cream); top:0; left:10%; transform:rotate(-8deg); animation-delay:0s;}
+  .bubble.b2{background:var(--lime); color:var(--ink); top:20%; right:0; transform:rotate(6deg); animation-delay:1.2s;}
+  .bubble.b3{background:var(--yellow); color:var(--ink); top:52%; left:0; transform:rotate(-4deg); animation-delay:.6s;}
+  .bubble.b4{background:var(--lavender); color:var(--ink); bottom:6%; right:12%; transform:rotate(9deg); animation-delay:1.8s;}
+  .bubble.b5{background:var(--cream); color:var(--ink); bottom:32%; left:34%; transform:rotate(-3deg); font-size:1.1rem; animation-delay:.3s;}
+  @keyframes float{
+    0%,100%{transform:translateY(0) rotate(var(--r,0deg));}
+    50%{transform:translateY(-14px) rotate(var(--r,0deg));}
+  }
+
+  /* today / countdown banner */
+  .banner{
+    background:var(--lime); color:var(--ink);
+    padding:16px 0; overflow:hidden; white-space:nowrap;
+    border-top:3px solid var(--ink); border-bottom:3px solid var(--ink);
+  }
+  .banner-track{
+    display:inline-flex; gap:40px; align-items:center;
+    animation:scroll-left 22s linear infinite;
+  }
+  .banner-track span{font-family:var(--font-display); font-size:1rem; letter-spacing:.02em;}
+  @keyframes scroll-left{ from{transform:translateX(0);} to{transform:translateX(-50%);} }
+
+  /* ---------- Stats strip ---------- */
+  .stats{padding:70px 0 20px;}
+  .stats-grid{
+    display:grid; grid-template-columns:repeat(4, 1fr); gap:18px;
+  }
+  .stat-card{
+    background:var(--panel); border-radius:var(--radius);
+    padding:26px 20px; text-align:left;
+    border:1px solid rgba(255,255,255,.06);
+  }
+  .stat-card .num{
+    font-family:var(--font-display); font-size:2.4rem; color:var(--lime); line-height:1;
+  }
+  .stat-card p{font-size:.88rem; color:#d8c6ec; margin-top:10px;}
+
+  /* ---------- Bestie types ---------- */
+  .types{padding:90px 0 60px;}
+  .section-head{max-width:640px; margin-bottom:44px;}
+  .section-head .eyebrow{margin-bottom:16px;}
+  .section-head h2{
+    font-family:var(--font-display);
+    font-size:clamp(2rem, 4vw, 3rem);
+    line-height:1.02;
+  }
+  .section-head p{color:#d8c6ec; margin-top:14px; font-size:1.02rem;}
+
+  .types-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(230px, 1fr));
+    gap:22px;
+  }
+  .type-card{
+    background:var(--cream); color:var(--ink);
+    border-radius:16px; padding:24px 22px;
+    transform:rotate(var(--rot));
+    transition:transform .25s ease, box-shadow .25s ease;
+    box-shadow:0 10px 0 rgba(0,0,0,.28);
+    position:relative;
+  }
+  .type-card:nth-child(1){--rot:-3deg; background:var(--pink); color:var(--cream); box-shadow:0 10px 0 var(--pink-deep);}
+  .type-card:nth-child(2){--rot:2deg;}
+  .type-card:nth-child(3){--rot:-2deg; background:var(--yellow);}
+  .type-card:nth-child(4){--rot:3deg; background:var(--lavender);}
+  .type-card:nth-child(5){--rot:-4deg; background:var(--lime);}
+  .type-card:nth-child(6){--rot:1deg;}
+  .type-card:hover{transform:rotate(0deg) translateY(-6px); box-shadow:0 16px 0 rgba(0,0,0,.28);}
+  .type-card .emoji{font-size:2.2rem; margin-bottom:12px; display:block;}
+  .type-card h3{font-family:var(--font-display); font-size:1.05rem; margin-bottom:8px;}
+  .type-card p{font-size:.9rem; opacity:.85;}
+
+  /* ---------- Card generator ---------- */
+  .maker{padding:90px 0;}
+  .maker-panel{
+    background:var(--panel); border-radius:28px;
+    padding:36px; border:1px solid rgba(255,255,255,.08);
+    display:grid; grid-template-columns:1fr 1fr; gap:40px;
+  }
+  .field{margin-bottom:18px;}
+  .field label{
+    display:block; font-size:.78rem; text-transform:uppercase; letter-spacing:.09em;
+    color:var(--lime); font-weight:700; margin-bottom:8px;
+  }
+  .field input[type=text], .field textarea{
+    width:100%; background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.15);
+    color:var(--cream); padding:12px 14px; border-radius:12px;
+    font-size:.95rem; resize:none;
+  }
+  .field input::placeholder, .field textarea::placeholder{color:rgba(255,246,236,.4);}
+  .row2{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+  .swatches{display:flex; gap:10px; flex-wrap:wrap;}
+  .swatch{
+    width:38px; height:38px; border-radius:50%;
+    border:3px solid transparent; cursor:pointer;
+  }
+  .swatch.active{border-color:var(--cream);}
+  .stickers{display:flex; gap:8px; flex-wrap:wrap;}
+  .sticker-btn{
+    width:42px; height:42px; border-radius:10px;
+    background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.15);
+    font-size:1.2rem; display:flex; align-items:center; justify-content:center;
+  }
+  .sticker-btn.active{background:var(--lime);}
+  .upload-btn{
+    display:inline-block; padding:10px 16px; border-radius:10px;
+    background:rgba(255,255,255,.08); border:1px dashed rgba(255,255,255,.3);
+    font-size:.85rem; cursor:pointer;
+  }
+  #photoInput{display:none;}
+
+  .preview-col{display:flex; flex-direction:column; align-items:center; gap:18px;}
+  #cardCanvas{
+    width:100%; max-width:320px; border-radius:18px;
+    box-shadow:0 20px 40px rgba(0,0,0,.45);
+  }
+  .download-btn{
+    background:var(--pink); color:var(--cream);
+    padding:14px 28px; border-radius:99px; font-weight:700;
+    box-shadow:0 6px 0 var(--pink-deep);
+    width:100%; max-width:320px;
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .download-btn:hover{transform:translateY(2px); box-shadow:0 4px 0 var(--pink-deep);}
+  .char-count{font-size:.75rem; color:#a58fc2; text-align:right; margin-top:4px;}
+
+  /* ---------- Quotes marquee ---------- */
+  .quotes{padding:40px 0; border-top:1px solid rgba(255,255,255,.08); border-bottom:1px solid rgba(255,255,255,.08);}
+  .quote-track{
+    display:inline-flex; gap:60px; white-space:nowrap;
+    animation:scroll-left 34s linear infinite reverse;
+    font-family:var(--font-hand); font-size:1.7rem; color:var(--lavender);
+  }
+
+  /* ---------- Footer / confetti ---------- */
+  footer{padding:100px 0 60px; text-align:center; position:relative;}
+  footer h2{
+    font-family:var(--font-display);
+    font-size:clamp(2.2rem, 5vw, 4rem);
+    margin-bottom:20px;
+  }
+  footer p{color:#d8c6ec; max-width:46ch; margin:0 auto 30px;}
+  .confetti-btn{
+    background:var(--yellow); color:var(--ink);
+    padding:18px 36px; border-radius:99px; font-weight:700; font-size:1rem;
+    box-shadow:0 6px 0 #c99e0f;
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .confetti-btn:hover{transform:translateY(2px); box-shadow:0 4px 0 #c99e0f;}
+  .foot-credit{margin-top:50px; font-size:.8rem; color:#7c6690;}
+  #confettiCanvas{position:fixed; inset:0; pointer-events:none; z-index:100;}
+
+  @media (max-width:860px){
+    .hero-grid{grid-template-columns:1fr;}
+    .collage{height:280px; order:-1;}
+    .stats-grid{grid-template-columns:repeat(2,1fr);}
+    .maker-panel{grid-template-columns:1fr;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important; transition:none !important;}
+    .reveal{opacity:1; transform:none;}
+  }
+</style>
+</head>
+<body>
+
+<div class="noise"></div>
+<canvas id="confettiCanvas"></canvas>
+
+<nav>
+  <div class="wrap">
+    <div class="logo">bestie<span>s</span>.day</div>
+    <a href="#maker" class="nav-cta">Make a card</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">✦ August 2 · every year, first Sunday of Aug</span>
+      <h1>IT'S<br><span class="accent">FRIENDSHIP</span><br>DAY.</h1>
+      <p class="sub">The unofficial official holiday for the people who reply "u up?" at 2am, remember your coffee order, and have never once let you down. Go make it Instagram official.</p>
+      <div class="hero-ctas">
+        <a href="#maker" class="btn-primary">Make a bestie card →</a>
+        <a href="#types" class="btn-ghost">Find your bestie type</a>
+      </div>
+    </div>
+    <div class="collage">
+      <div class="bubble b1">bestieee 🫶</div>
+      <div class="bubble b2">iykyk</div>
+      <div class="bubble b3">no bc fr fr</div>
+      <div class="bubble b4">✨ ride or die ✨</div>
+      <div class="bubble b5">said what she said</div>
+    </div>
+  </div>
+</header>
+
+<div class="banner">
+  <div class="banner-track" id="bannerTrack"></div>
+</div>
+
+<section class="stats">
+  <div class="wrap">
+    <div class="stats-grid">
+      <div class="stat-card"><div class="num">3</div><p>close friends is the average adult's inner circle — treat yours well.</p></div>
+      <div class="stat-card"><div class="num">1958</div><p>the year Friendship Day was first proposed, by the founder of Hallmark. Genuinely.</p></div>
+      <div class="stat-card"><div class="num">30+</div><p>countries celebrate on the first Sunday of August, same as today.</p></div>
+      <div class="stat-card"><div class="num">∞</div><p>the number of times your group chat has saved your week.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="types" id="types">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">the lineup</span>
+      <h2>Every friend group has one of each.</h2>
+      <p>Tag the ones that fit. No judgment — every group needs all six.</p>
+    </div>
+    <div class="types-grid">
+      <div class="type-card reveal"><span class="emoji">🌪️</span><h3>The Chaos Coordinator</h3><p>Plans the trip at 1am. Books non-refundable tickets before anyone's confirmed. Somehow it always works out.</p></div>
+      <div class="type-card reveal"><span class="emoji">🫖</span><h3>The Mom Friend</h3><p>Has snacks, a portable charger, and your location at all times. You will drink water tonight.</p></div>
+      <div class="type-card reveal"><span class="emoji">🎧</span><h3>The Vibe Curator</h3><p>Sends a playlist for every mood. Knows a song is "so you" before you do.</p></div>
+      <div class="type-card reveal"><span class="emoji">📉</span><h3>The Devil's Advocate</h3><p>Loves you enough to say "are we sure that's a good idea" out loud in the group chat.</p></div>
+      <div class="type-card reveal"><span class="emoji">🫠</span><h3>The Overtexter</h3><p>Sixteen messages to say one thing. You wouldn't have it any other way.</p></div>
+      <div class="type-card reveal"><span class="emoji">🕰️</span><h3>The Constant</h3><p>Different cities, different eras, same energy every single time you reconnect.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="maker" id="maker">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">make it official</span>
+      <h2>Build a bestie card in 30 seconds.</h2>
+      <p>Fill it in, watch it update live, then save it and send it. No login, no catch.</p>
+    </div>
+
+    <div class="maker-panel reveal">
+      <div>
+        <div class="row2">
+          <div class="field">
+            <label for="fromName">From</label>
+            <input type="text" id="fromName" maxlength="20" placeholder="Your name">
+          </div>
+          <div class="field">
+            <label for="toName">To</label>
+            <input type="text" id="toName" maxlength="20" placeholder="Bestie's name">
+          </div>
+        </div>
+        <div class="field">
+          <label for="msg">Message</label>
+          <textarea id="msg" rows="3" maxlength="110" placeholder="the one who never lets the group chat die..."></textarea>
+          <div class="char-count"><span id="msgCount">0</span>/110</div>
+        </div>
+        <div class="field">
+          <label>Sticker</label>
+          <div class="stickers" id="stickerRow"></div>
+        </div>
+        <div class="field">
+          <label>Theme</label>
+          <div class="swatches" id="swatchRow"></div>
+        </div>
+        <div class="field">
+          <label>Photo (optional)</label><br>
+          <label class="upload-btn" for="photoInput">Upload a photo</label>
+          <input type="file" id="photoInput" accept="image/*">
+        </div>
+      </div>
+
+      <div class="preview-col">
+        <canvas id="cardCanvas" width="900" height="1200"></canvas>
+        <button class="download-btn" id="downloadBtn">Download card ⤓</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="quotes">
+  <div class="quote-track" id="quoteTrack"></div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <h2 class="reveal">Go tell them.</h2>
+    <p class="reveal">Not "happy friendship day 🎉" in the group chat and nothing else. Send the card. Say the thing.</p>
+    <button class="confetti-btn reveal" id="confettiBtn">Spread the love ✨</button>
+    <p class="foot-credit">Made for the people who show up. Every single time.</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  /* ---------- reveal on scroll ---------- */
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, {threshold:.15});
+  revealEls.forEach(el=>io.observe(el));
+
+  /* ---------- countdown / today banner ---------- */
+  function firstSundayOfAugust(year){
+    const d = new Date(year, 7, 1);
+    const day = d.getDay();
+    const offset = (7 - day) % 7;
+    d.setDate(1 + offset);
+    return d;
+  }
+  const now = new Date();
+  let fd = firstSundayOfAugust(now.getFullYear());
+  const todayStr = now.toDateString();
+  let bannerItems = [];
+  if(fd.toDateString() === todayStr){
+    bannerItems = ["🎉 IT'S FRIENDSHIP DAY — RIGHT NOW", "✦ GO TEXT YOUR BESTIE", "🫶 MAKE THEM A CARD BELOW", "✨ NO BETTER TIME THAN TODAY"];
+  } else {
+    if(fd < now) fd = firstSundayOfAugust(now.getFullYear()+1);
+    const msLeft = fd - now;
+    const daysLeft = Math.ceil(msLeft / 86400000);
+    bannerItems = [`⏳ ${daysLeft} DAYS UNTIL FRIENDSHIP DAY`, "✦ MAKE A CARD NOW, SEND IT EARLY", "🫶 DON'T WAIT FOR THE HOLIDAY", "✨ SPREAD THE LOVE ANYTIME"];
+  }
+  const track = document.getElementById('bannerTrack');
+  const doubled = [...bannerItems, ...bannerItems, ...bannerItems, ...bannerItems];
+  track.innerHTML = doubled.map(t=>`<span>${t}</span>`).join('<span>&nbsp;&nbsp;✦&nbsp;&nbsp;</span>');
+
+  /* ---------- quotes marquee ---------- */
+  const quotes = [
+    "“Friends are the family you choose.”",
+    "“A real friend never gets in your way unless you happen to be going down.”",
+    "“In the sweetness of friendship let there be laughter.”",
+    "“Good friends are like stars — you don't always see them, but you know they're there.”",
+    "“Friendship is born at that moment when one says: what! you too?”"
+  ];
+  const qTrack = document.getElementById('quoteTrack');
+  const qDoubled = [...quotes, ...quotes];
+  qTrack.innerHTML = qDoubled.map(q=>`<span>${q}</span>`).join('<span>&nbsp;&nbsp;·&nbsp;&nbsp;</span>');
+
+  /* ---------- card generator ---------- */
+  const canvas = document.getElementById('cardCanvas');
+  const ctx = canvas.getContext('2d');
+  const fromInput = document.getElementById('fromName');
+  const toInput = document.getElementById('toName');
+  const msgInput = document.getElementById('msg');
+  const msgCount = document.getElementById('msgCount');
+  const stickerRow = document.getElementById('stickerRow');
+  const swatchRow = document.getElementById('swatchRow');
+  const photoInput = document.getElementById('photoInput');
+  const downloadBtn = document.getElementById('downloadBtn');
+
+  const stickers = ['🫶','✨','🎉','💫','🌈','🔥'];
+  let activeSticker = '🫶';
+  stickers.forEach((s,i)=>{
+    const b = document.createElement('button');
+    b.type='button'; b.className='sticker-btn'+(i===0?' active':''); b.textContent=s;
+    b.addEventListener('click', ()=>{
+      document.querySelectorAll('.sticker-btn').forEach(x=>x.classList.remove('active'));
+      b.classList.add('active'); activeSticker = s; drawCard();
+    });
+    stickerRow.appendChild(b);
+  });
+
+  const themes = [
+    {name:'Pink Punch', from:'#ff3e8e', to:'#8e1256', ink:'#fff6ec'},
+    {name:'Lime Riot', from:'#c6ff3b', to:'#4c7a06', ink:'#170821'},
+    {name:'Lavender Dream', from:'#b98eff', to:'#4a2189', ink:'#fff6ec'},
+    {name:'Sunset Pop', from:'#ffd23f', to:'#ff3e8e', ink:'#170821'}
+  ];
+  let activeTheme = themes[0];
+  themes.forEach((t,i)=>{
+    const b = document.createElement('button');
+    b.type='button'; b.className='swatch'+(i===0?' active':'');
+    b.style.background = `linear-gradient(135deg, ${t.from}, ${t.to})`;
+    b.title = t.name;
+    b.addEventListener('click', ()=>{
+      document.querySelectorAll('.swatch').forEach(x=>x.classList.remove('active'));
+      b.classList.add('active'); activeTheme = t; drawCard();
+    });
+    swatchRow.appendChild(b);
+  });
+
+  let uploadedImg = null;
+  photoInput.addEventListener('change', (e)=>{
+    const file = e.target.files[0];
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev)=>{
+      const img = new Image();
+      img.onload = ()=>{ uploadedImg = img; drawCard(); };
+      img.src = ev.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+
+  function wrapText(context, text, x, y, maxWidth, lineHeight){
+    const words = text.split(' ');
+    let line = '';
+    let lines = [];
+    for(let n=0; n<words.length; n++){
+      const testLine = line + words[n] + ' ';
+      if(context.measureText(testLine).width > maxWidth && n > 0){
+        lines.push(line);
+        line = words[n] + ' ';
+      } else {
+        line = testLine;
+      }
+    }
+    lines.push(line);
+    lines.forEach((l, i)=> context.fillText(l.trim(), x, y + i*lineHeight));
+    return lines.length;
+  }
+
+  function roundRect(c, x, y, w, h, r){
+    c.beginPath();
+    c.moveTo(x+r, y);
+    c.arcTo(x+w, y, x+w, y+h, r);
+    c.arcTo(x+w, y+h, x, y+h, r);
+    c.arcTo(x, y+h, x, y, r);
+    c.arcTo(x, y, x+w, y, r);
+    c.closePath();
+  }
+
+  function drawCard(){
+    const W = canvas.width, H = canvas.height;
+    ctx.clearRect(0,0,W,H);
+
+    // background
+    roundRect(ctx, 0,0,W,H, 40);
+    ctx.save(); ctx.clip();
+    const grad = ctx.createLinearGradient(0,0,W,H);
+    grad.addColorStop(0, activeTheme.from);
+    grad.addColorStop(1, activeTheme.to);
+    ctx.fillStyle = grad;
+    ctx.fillRect(0,0,W,H);
+
+    // decorative blobs
+    ctx.globalAlpha = .18;
+    ctx.fillStyle = '#ffffff';
+    ctx.beginPath(); ctx.arc(W*0.85, H*0.12, 180, 0, Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(W*0.1, H*0.88, 220, 0, Math.PI*2); ctx.fill();
+    ctx.globalAlpha = 1;
+
+    const ink = activeTheme.ink;
+
+    // top label
+    ctx.fillStyle = ink;
+    ctx.font = '700 30px "Space Grotesk", sans-serif';
+    ctx.textBaseline = 'alphabetic';
+    ctx.fillText('FRIENDSHIP DAY', 60, 90);
+
+    // photo frame
+    const cx = W/2, cy = 380, r = 210;
+    ctx.save();
+    ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI*2); ctx.closePath(); ctx.clip();
+    if(uploadedImg){
+      const iw = uploadedImg.width, ih = uploadedImg.height;
+      const scale = Math.max((r*2)/iw, (r*2)/ih);
+      const dw = iw*scale, dh = ih*scale;
+      ctx.drawImage(uploadedImg, cx-dw/2, cy-dh/2, dw, dh);
+    } else {
+      ctx.fillStyle = 'rgba(255,255,255,.25)';
+      ctx.fillRect(cx-r, cy-r, r*2, r*2);
+      ctx.font = '160px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(activeSticker, cx, cy+55);
+      ctx.textAlign = 'left';
+    }
+    ctx.restore();
+    ctx.lineWidth = 10;
+    ctx.strokeStyle = ink;
+    ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI*2); ctx.stroke();
+
+    // sticker badge
+    ctx.save();
+    ctx.translate(cx + r - 30, cy + r - 30);
+    ctx.rotate(-.2);
+    ctx.font = '90px sans-serif';
+    ctx.textAlign = 'center'; ctx.textBaseline='middle';
+    ctx.fillText(activeSticker, 0, 0);
+    ctx.restore();
+    ctx.textAlign = 'left'; ctx.textBaseline = 'alphabetic';
+
+    // names
+    const from = (fromInput.value || 'Me').trim();
+    const to = (toInput.value || 'My bestie').trim();
+    ctx.fillStyle = ink;
+    ctx.font = '900 58px "Archivo Black", sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(`${from} × ${to}`, cx, 700);
+    ctx.textAlign = 'left';
+
+    // message
+    const msg = (msgInput.value || "the one who never lets the group chat die.").trim();
+    ctx.font = '400 34px "Space Grotesk", sans-serif';
+    ctx.fillStyle = ink;
+    ctx.globalAlpha = .92;
+    const startY = 780;
+    ctx.textAlign = 'center';
+    // manual centered wrap
+    const words = msg.split(' ');
+    let line = '', lines = [];
+    for(let n=0;n<words.length;n++){
+      const test = line + words[n] + ' ';
+      if(ctx.measureText(test).width > W-160 && n>0){ lines.push(line.trim()); line = words[n]+' '; }
+      else line = test;
+    }
+    lines.push(line.trim());
+    lines.slice(0,4).forEach((l,i)=> ctx.fillText(l, cx, startY + i*46));
+    ctx.globalAlpha = 1;
+    ctx.textAlign = 'left';
+
+    // footer tag
+    ctx.font = '600 26px "Space Grotesk", sans-serif';
+    ctx.fillStyle = ink;
+    ctx.globalAlpha = .75;
+    ctx.textAlign = 'center';
+    ctx.fillText('besties.day', cx, H-60);
+    ctx.globalAlpha = 1;
+    ctx.textAlign = 'left';
+
+    ctx.restore(); // release clip from rounded rect
+  }
+
+  [fromInput, toInput].forEach(el=> el.addEventListener('input', drawCard));
+  msgInput.addEventListener('input', ()=>{
+    msgCount.textContent = msgInput.value.length;
+    drawCard();
+  });
+
+  function isIOS(){
+    return /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  }
+
+  downloadBtn.addEventListener('click', ()=>{
+    const from = (fromInput.value || 'me').trim().replace(/\s+/g,'-').toLowerCase();
+    const to = (toInput.value || 'bestie').trim().replace(/\s+/g,'-').toLowerCase();
+    const filename = `friendship-day-${from}-${to}.png`;
+    const originalLabel = downloadBtn.textContent;
+
+    canvas.toBlob((blob)=>{
+      if(!blob){
+        // fallback if toBlob isn't supported
+        const dataUrl = canvas.toDataURL('image/png');
+        openOrDownload(dataUrl, filename);
+        return;
+      }
+      const url = URL.createObjectURL(blob);
+
+      if(isIOS()){
+        // iOS Safari ignores the download attribute — open in a new tab
+        // so the user can long-press and "Add to Photos".
+        window.open(url, '_blank');
+        downloadBtn.textContent = 'Long-press the image to save ✓';
+      } else {
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        downloadBtn.textContent = 'Downloaded ✓';
+      }
+      setTimeout(()=>{ URL.revokeObjectURL(url); downloadBtn.textContent = originalLabel; }, 2500);
+    }, 'image/png');
+  });
+
+  function openOrDownload(dataUrl, filename){
+    if(isIOS()){
+      window.open(dataUrl, '_blank');
+    } else {
+      const link = document.createElement('a');
+      link.href = dataUrl;
+      link.download = filename;
+      link.click();
+    }
+  }
+
+  drawCard();
+
+  /* ---------- confetti ---------- */
+  const confettiCanvas = document.getElementById('confettiCanvas');
+  const cctx = confettiCanvas.getContext('2d');
+  function resizeConfetti(){
+    confettiCanvas.width = window.innerWidth;
+    confettiCanvas.height = window.innerHeight;
+  }
+  resizeConfetti();
+  window.addEventListener('resize', resizeConfetti);
+
+  const colors = ['#ff3e8e','#c6ff3b','#ffd23f','#b98eff','#fff6ec'];
+  let particles = [];
+  let animId = null;
+
+  function burst(){
+    const count = 140;
+    for(let i=0;i<count;i++){
+      particles.push({
+        x: confettiCanvas.width/2 + (Math.random()-.5)*200,
+        y: confettiCanvas.height*0.3,
+        vx: (Math.random()-.5)*14,
+        vy: Math.random()*-14 - 4,
+        size: Math.random()*8+4,
+        color: colors[Math.floor(Math.random()*colors.length)],
+        rot: Math.random()*360,
+        vr: (Math.random()-.5)*14,
+        life: 0
+      });
+    }
+    if(!animId) animate();
+  }
+
+  function animate(){
+    cctx.clearRect(0,0,confettiCanvas.width, confettiCanvas.height);
+    particles.forEach(p=>{
+      p.vy += 0.35; // gravity
+      p.x += p.vx; p.y += p.vy; p.rot += p.vr; p.life++;
+      cctx.save();
+      cctx.translate(p.x, p.y);
+      cctx.rotate(p.rot*Math.PI/180);
+      cctx.fillStyle = p.color;
+      cctx.globalAlpha = Math.max(0, 1 - p.life/140);
+      cctx.fillRect(-p.size/2, -p.size/2, p.size, p.size*0.6);
+      cctx.restore();
+    });
+    particles = particles.filter(p=> p.life < 140 && p.y < confettiCanvas.height+50);
+    if(particles.length>0){
+      animId = requestAnimationFrame(animate);
+    } else {
+      cctx.clearRect(0,0,confettiCanvas.width, confettiCanvas.height);
+      animId = null;
+    }
+  }
+
+  document.getElementById('confettiBtn').addEventListener('click', burst);
+})();
+</script>
+</body>
+</html>
